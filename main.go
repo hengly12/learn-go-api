@@ -29,10 +29,20 @@ import (
 	"go-api/routes"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 )
 
 func main() {
 	r := chi.NewRouter()
+
+	// Add CORS middleware
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"}, // or []string{"*"} for all
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
 
 	routes.RegisterUserRoutes(r)
 	routes.RegisterProductRoutes(r)
@@ -42,6 +52,5 @@ func main() {
 		port = "8080"
 	}
 
-	log.Println("Server running on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
