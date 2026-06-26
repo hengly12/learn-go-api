@@ -55,3 +55,32 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 
 	http.Error(w, "Product not found", http.StatusNotFound)
 }
+
+func UpdateProduct(w http.ResponseWriter, r *http.Request) {
+	idParam := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		http.Error(w, "Invalid product ID", http.StatusBadRequest)
+		return
+	}
+
+	var updatedProduct Product
+	err = json.NewDecoder(r.Body).Decode(&updatedProduct)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	for i, p := range product {
+		if p.ID == id {
+			updatedProduct.ID = id
+			product[i] = updatedProduct
+
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(updatedProduct)
+			return
+		}
+	}
+
+	http.Error(w, "Product not found", http.StatusNotFound)
+}

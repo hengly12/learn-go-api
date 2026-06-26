@@ -28,9 +28,9 @@ func RegisterProductRoutes(r chi.Router) {
 
 		// Require token for all product endpoints
 		r.Use(middleware.AuthMiddleware)
-
 		r.Get("/", handlers.GetProducts)
 		r.Post("/", handlers.CreateProduct)
+		r.Put("/{id}", handlers.UpdateProduct)
 		r.Delete("/{id}", handlers.DeleteProduct)
 	})
 }

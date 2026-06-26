@@ -19,6 +19,8 @@
 // 		http.ListenAndServe(":8080", r)
 // 	}
 
+// run code in terminal air or go run main.go
+
 package main
 
 import (
